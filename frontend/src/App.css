@@ -1,0 +1,306 @@
+.app-shell {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 20px 64px;
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.top-bar a {
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.erro-banner {
+  background: var(--danger-bg);
+  color: var(--danger);
+  border: 1px solid var(--danger);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.btn {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-h);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 14px;
+}
+
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+
+.btn-danger {
+  background: transparent;
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Lista de estantes */
+
+.estante-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.estante-card {
+  display: block;
+  text-decoration: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+  color: inherit;
+}
+
+.estante-card h3 {
+  margin: 0 0 6px;
+}
+
+.estante-card p {
+  margin: 0;
+  font-size: 13px;
+  opacity: 0.75;
+}
+
+.nova-estante-form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.nova-estante-form input {
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: inherit;
+}
+
+/* Grade da estante */
+
+.grade-estante {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: #6b4a2f;
+  padding: 18px;
+  border-radius: 12px;
+}
+
+.prateleira-row {
+  background: #8a6039;
+  border-radius: 8px;
+  padding: 10px 12px 16px;
+  min-height: 130px;
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  position: relative;
+  border-bottom: 8px solid #5a3d24;
+}
+
+.prateleira-row.arrastando-sobre {
+  outline: 2px dashed #ffe0b2;
+  outline-offset: -4px;
+}
+
+.prateleira-label {
+  position: absolute;
+  top: 4px;
+  left: 8px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.prateleira-vazia {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 13px;
+  padding-bottom: 8px;
+}
+
+/* Lombada de livro */
+
+.lombada {
+  width: 46px;
+  height: 110px;
+  border-radius: 3px 3px 0 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 6px 2px;
+  cursor: grab;
+  box-shadow: 1px 0 0 rgba(0, 0, 0, 0.15) inset;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.lombada:active {
+  cursor: grabbing;
+}
+
+.lombada .titulo {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  max-height: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.lombada .excluir-livro {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: none;
+  background: var(--danger);
+  color: white;
+  font-size: 11px;
+  line-height: 1;
+  padding: 0;
+  display: none;
+}
+
+.lombada:hover .excluir-livro {
+  display: block;
+}
+
+/* Toolbar da estante */
+
+.estante-toolbar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+/* Modal */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 50;
+}
+
+.modal {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 22px;
+  max-width: 480px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal h2 {
+  margin-top: 0;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.form-field label {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.form-field input,
+.form-field select {
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: inherit;
+}
+
+.form-row {
+  display: flex;
+  gap: 10px;
+}
+
+.form-row .form-field {
+  flex: 1;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.capa-preview {
+  width: 70px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+}
+
+/* Revisão de sugestões */
+
+.sugestao-linha {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.sugestao-linha .campos {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sugestao-linha .meta {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.sugestao-linha .confianca-baixa {
+  color: var(--danger);
+}
+
+.sugestao-linha .erro-linha {
+  color: var(--danger);
+  font-size: 12px;
+}

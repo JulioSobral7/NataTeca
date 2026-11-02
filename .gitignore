@@ -1,0 +1,21 @@
+bin/
+obj/
+*.db
+*.db-shm
+*.db-wal
+.vs/
+.DS_Store
+
+# frontend (when added)
+node_modules/
+dist/
+.env
+
+# vision-service
+__pycache__/
+*.pyc
+.venv/
+*.pt
+
+# foto de teste
+prateleira.png
