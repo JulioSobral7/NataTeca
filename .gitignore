@@ -5,6 +5,7 @@ obj/
 *.db-wal
 .vs/
 .DS_Store
+._*
 
 # frontend (when added)
 node_modules/
@@ -19,3 +20,9 @@ __pycache__/
 
 # foto de teste
 prateleira.png
+
+# LLM local
+*.gguf
+
+# arquivos de reconhecimento (um JSON por foto)
+API/reconhecimentos/

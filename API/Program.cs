@@ -1,6 +1,7 @@
 using API.Data;
 using API.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +20,38 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")
         ?? "Data Source=natateca.db"));
 
-builder.Services.AddHttpClient<IBookMetadataService, GoogleBooksMetadataService>();
+// Quem identifica título/autor das lombadas:
+//   "VisaoLlm"    — LLM de visão local lê a imagem de cada lombada (padrão; melhor nos testes)
+//   "Llm"         — LLM de texto local separa o texto do OCR
+//   "GoogleBooks" — busca o texto do OCR no Google Books
+var fonteMetadados = builder.Configuration["Metadados:Fonte"] ?? "VisaoLlm";
+builder.Services.Configure<LlmOptions>(builder.Configuration.GetSection("Llm"));
+void ConfigurarOllama(IServiceProvider sp, HttpClient client)
+{
+    var llm = sp.GetRequiredService<IOptions<LlmOptions>>().Value;
+    client.BaseAddress = new Uri(llm.BaseUrl);
+    client.Timeout = TimeSpan.FromSeconds(llm.TimeoutSegundos);
+}
+
+switch (fonteMetadados.ToLowerInvariant())
+{
+    case "visaollm":
+        builder.Services.AddHttpClient<IBookMetadataService, VisaoLlmMetadataService>(ConfigurarOllama);
+        break;
+    case "llm":
+        builder.Services.AddHttpClient<IBookMetadataService, LlmMetadataService>(ConfigurarOllama);
+        break;
+    case "googlebooks":
+        builder.Services.AddHttpClient<IBookMetadataService, GoogleBooksMetadataService>();
+        break;
+    default:
+        throw new InvalidOperationException(
+            $"Metadados:Fonte inválida: '{fonteMetadados}'. Use 'VisaoLlm', 'Llm' ou 'GoogleBooks'.");
+}
+
+builder.Services.AddScoped<LivroService>();
+builder.Services.AddSingleton<ArquivoReconhecimentoService>();
+
 builder.Services.AddHttpClient<IVisaoService, PythonVisaoService>(client =>
 {
     client.BaseAddress = new Uri(builder.Configuration["VisionService:BaseUrl"] ?? "http://localhost:8000/");
@@ -32,7 +64,8 @@ builder.Services.AddCors(options =>
     {
         policy.WithOrigins("http://localhost:5173", "http://localhost:3000")
               .AllowAnyHeader()
-              .AllowAnyMethod();
+              .AllowAnyMethod()
+              .WithExposedHeaders(API.Controllers.ReconhecimentoController.CabecalhoArquivo);
     });
 });
 

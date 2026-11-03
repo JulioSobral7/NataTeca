@@ -9,6 +9,7 @@ import type { LivroInput } from "../types/livro";
 interface ItemRevisao {
   titulo: string;
   autor: string;
+  ano: string;
   capaUrl: string | null;
   textoOcrBruto: string;
   confianca: number;
@@ -43,6 +44,7 @@ export default function RevisaoSugestoesModal({
     sugestoes.map((s) => ({
       titulo: s.tituloSugerido ?? "",
       autor: s.autorSugerido ?? "",
+      ano: s.anoSugerido?.toString() ?? "",
       capaUrl: s.capaUrlSugerida,
       textoOcrBruto: s.textoOcrBruto,
       confianca: s.confianca,
@@ -52,7 +54,7 @@ export default function RevisaoSugestoesModal({
   const [errosPorLinha, setErrosPorLinha] = useState<Record<number, string>>({});
   const [salvando, setSalvando] = useState(false);
 
-  function atualizarItem(indice: number, campo: "titulo" | "autor", valor: string) {
+  function atualizarItem(indice: number, campo: "titulo" | "autor" | "ano", valor: string) {
     setItens((atual) => atual.map((item, i) => (i === indice ? { ...item, [campo]: valor } : item)));
   }
 
@@ -73,7 +75,7 @@ export default function RevisaoSugestoesModal({
     const inputs: LivroInput[] = itens.map((item, indice) => ({
       titulo: item.titulo.trim() || `Livro não identificado ${indice + 1}`,
       autor: item.autor.trim() || "Desconhecido",
-      ano: null,
+      ano: Number.parseInt(item.ano, 10) || null,
       genero: null,
       capaUrl: item.capaUrl,
       status: "QueroLer",
@@ -106,7 +108,7 @@ export default function RevisaoSugestoesModal({
     <Modal onClose={onClose}>
       <h2>Revisar livros identificados</h2>
       <p className="meta">
-        Prateleira {prateleira + 1} — corrija título/autor quando o OCR errar, e remova linhas que
+        Prateleira {prateleira + 1} — corrija título/autor/ano quando o OCR errar, e remova linhas que
         não correspondem a um livro real (cortes errados da segmentação).
       </p>
 
@@ -127,6 +129,12 @@ export default function RevisaoSugestoesModal({
               placeholder="Autor"
               value={item.autor}
               onChange={(e) => atualizarItem(indice, "autor", e.target.value)}
+            />
+            <input
+              placeholder="Ano"
+              inputMode="numeric"
+              value={item.ano}
+              onChange={(e) => atualizarItem(indice, "ano", e.target.value.replace(/\D/g, "").slice(0, 4))}
             />
             <span className={`meta${item.confianca < 50 ? " confianca-baixa" : ""}`}>
               OCR: "{item.textoOcrBruto || "(vazio)"}" · confiança {item.confianca}%

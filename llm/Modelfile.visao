@@ -1,0 +1,8 @@
+# Modelo com visão: lê título/autor direto da imagem de cada lombada (fonte "VisaoLlm").
+# Coloque (ou crie links para) o .gguf do modelo e o mmproj nesta pasta e rode, a partir da raiz do repositório:
+#   ollama create natateca-vl -f llm/Modelfile.visao
+FROM ./modelo.gguf
+FROM ./mmproj.gguf
+
+PARAMETER temperature 0
+PARAMETER num_ctx 8192

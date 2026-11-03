@@ -1,0 +1,9 @@
+# Modelo local que separa título/autor/ano do texto OCR das lombadas.
+# Coloque (ou crie um link para) o .gguf nesta pasta e rode, a partir da raiz do repositório:
+#   ollama create natateca-llm -f llm/Modelfile
+FROM ./modelo.gguf
+
+# Saída determinística: a mesma foto gera o mesmo arquivo.
+PARAMETER temperature 0
+# Uma prateleira cheia (~40 lombadas) cabe com folga.
+PARAMETER num_ctx 8192
