@@ -5,5 +5,5 @@ pillow
 numpy<2
 opencv-python-headless
 ultralytics
-paddlepaddle
-paddleocr
+paddlepaddle<3.3  # 3.3 + oneDNN quebra os modelos PP-OCRv5 na CPU (ConvertPirAttribute2RuntimeAttribute)
+paddleocr>=3  # o código usa a API 3.x (predict, PP-OCRv5)
